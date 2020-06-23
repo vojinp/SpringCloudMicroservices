@@ -42,8 +42,6 @@ public class CatalogueController {
                                                 .block()
                                                 .getRating()));
 
-        System.out.println("test");
-
         return ResponseEntity.ok(itemResponse);
     }
 }
