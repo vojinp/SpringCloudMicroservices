@@ -1,5 +1,6 @@
 package com.vojinpesalj.microservices.catalogueservice.controller;
 
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.vojinpesalj.microservices.catalogueservice.domain.ItemRating;
 import com.vojinpesalj.microservices.catalogueservice.domain.ItemResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ public class CatalogueController {
     @Autowired private WebClient.Builder webClientBuilder;
 
     @GetMapping
+    @HystrixCommand(defaultFallback = "defaultGet")
     public ResponseEntity<ItemResponse> get() {
         ItemResponse itemResponse =
                 webClientBuilder
@@ -44,4 +46,9 @@ public class CatalogueController {
 
         return ResponseEntity.ok(itemResponse);
     }
+
+    private ResponseEntity<ItemResponse> defaultGet() {
+        return ResponseEntity.ok(new ItemResponse());
+    }
+
 }
